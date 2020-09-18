@@ -26,7 +26,7 @@ class Spot:
     self.col = col
     self.x = row * width 
     self.y = col * width 
-    self.color = WHITE # All cubes will be white at start
+    self.color = WHITE # All cubes will be white at start / Also indicates areas not yet looked at
     self.neighbors = [] 
     self.width = width 
     self.total_rows 
@@ -38,3 +38,49 @@ def get_pos(self):
 # The red squares will indicate that we already looked at this position 
 def is_closed(self):
     return self.color == RED
+
+# Open Set
+ def is_open(self):
+    return self.colo == ORANGE
+
+# Barrier
+def is_barrier(self):
+    return self.color == BLACK
+
+# Starting Location
+def is_start(self):
+    return self.color == GREEN
+
+# Ending Location
+def is_end(self):
+    return self.color == PURPLE
+
+# Resets the Grid
+def reset(self):
+    self.color == WHITE
+
+# Change the colors
+def make_closed(self):
+    self.color = RED
+
+def make_open(self):
+    self.color = GREEN
+
+def make_barrier(self):
+    self.color = BLACK
+
+def make_end(self):
+    self.color = PURPLE
+
+def make_path(self):
+    self.color = TURQUOISE
+
+def draw(self, win):
+    pygame.draw.rect(win, self.color, ())
+
+def update_neighbors(self, grid):
+    pass
+
+# Less than that handles Spot comparisons 
+def __lt__(self, other):
+    return False
