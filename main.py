@@ -97,6 +97,7 @@ def h(p1, p2):
     # Use distance formula 
     return abs(x1 - x2) + abs(y1 - y2)
 
+# Makes the grid
 def make_grid(rows, width):
     grid = []
     gap = width // rows 
@@ -105,5 +106,57 @@ def make_grid(rows, width):
         for j in rage(rows):
             spot = new Spot(i, j, gap, rows)
             grid[i].append(spot)
+
+    return grid 
+
+# Draw Lines
+def draw_grid(win,rows,width)
+    gap = width // rows 
+    for i in range(rows):
+        pygame.draw.line(win, GREY, (0, i * gap), (width, i * gap)) # Horiztanl
+        for j in range(rows):
+            pygame.draw.line(win, GREY, (j * gap, 0), (j * gap, width)) # Vertical
+
+def draw(win, grid, rows, width):
+    win.fill(WHITE)
+
+    for row in grid:
+        for spot in row:
+            spot.draw(win)
+    draw_grid(win, rows, width)
+    pygame.display.update()
+
+# Handles mouse clicks - drawing cubes
+def get_clicked_pos(pos, rows, width):
+    gap = width // rows
+    y, x = pos # take the position and divide by the width of the cubes
+
+    row = y // gap
+    col = x // gap 
+
+    return row, col
+
+# The Main Loop
+def main(win, width):
+
+    ROWS = 50
+    grid = make_grid(ROWS, width)
+
+    start = None
+    end = None
+    
+    run = True 
+    started = False
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if started:
+                contine
+    pygame.quit()
+            
+
+
+
 
     
