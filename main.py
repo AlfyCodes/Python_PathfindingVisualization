@@ -23,16 +23,16 @@ TURQUOISE = (64, 224, 208)
 
 
 class Spot:
-    def __init__(self, row, col, width, total_rows)
-    self.row = row
-    self.col = col
-    self.x = row * width
-    self.y = col * width
-    # All cubes will be white at start / Also indicates areas not yet looked at
-    self.color = WHITE
-    self.neighbors = []
-    self.width = width
-    self.total_rows
+    def __init__(self, row, col, width, total_rows):
+        self.row = row
+        self.col = col
+        self.x = row * width
+        self.y = col * width
+        # All cubes will be white at start / Also indicates areas not yet looked at
+        self.color = WHITE
+        self.neighbors = []
+        self.width = width
+        self.total_rows = total_rows
 
 # Gets the position
     def get_pos(self):
@@ -106,14 +106,14 @@ def make_grid(rows, width):
     gap = width // rows 
     for i in range(rows):
         grid.append([])
-        for j in rage(rows):
-            spot = new Spot(i, j, gap, rows)
+        for j in range(rows):
+            spot = Spot(i, j, gap, rows)
             grid[i].append(spot)
 
     return grid 
 
 # Draw Lines
-def draw_grid(win,rows,width)
+def draw_grid(win,rows,width):
     gap = width // rows 
     for i in range(rows):
         pygame.draw.line(win, GREY, (0, i * gap), (width, i * gap)) # Horiztanl
@@ -156,9 +156,9 @@ def main(win, width):
                 run = False
 
             if started:
-                contine
+                continue
             
-            if pygame.moouse.get_pressed()[0]: # Left Mouse Click
+            if pygame.mouse.get_pressed()[0]: # Left Mouse Click
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
                 spot = grid[row][col]
@@ -169,9 +169,15 @@ def main(win, width):
                     end = spot
                     end.mmake_end()
 
-            elif pygame.mouse.get_pressed[2]: # Right Mouse Click
+                elif spot != end and spot != start: # Else if make a barrier
+                    spot.make_barrier()
+
+            elif pygame.mouse.get_pressed()[2]: # Right Mouse Click
+                pass
                 
     pygame.quit()
+
+main(WIN, WIDTH)
             
 
 
