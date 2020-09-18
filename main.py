@@ -84,3 +84,14 @@ def update_neighbors(self, grid):
 # Less than that handles Spot comparisons 
 def __lt__(self, other):
     return False
+
+# Heuristic Function / Figure the distance between point 1 and point 2 using Manhattan Distance
+def h(p1, p2):
+    x1, y1 = p1
+    x2, y2 = p2
+    # Use distance formula 
+    return abs(x1 - x2) + abs(y1 - y2)
+
+
+
+    
