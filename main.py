@@ -64,6 +64,9 @@ class Spot:
     def reset(self):
         self.color == WHITE
 
+def make_start(self):
+    self.color = GREEN
+
 # Change the colors
     def make_closed(self):
         self.color = RED
@@ -151,8 +154,23 @@ def main(win, width):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+
             if started:
                 contine
+            
+            if pygame.moouse.get_pressed()[0]: # Left Mouse Click
+                pos = pygame.mouse.get_pos()
+                row, col = get_clicked_pos(pos, ROWS, width)
+                spot = grid[row][col]
+                if not start: # If start is not on the grid - make it on next click
+                    start = spot 
+                    start.make_start()
+                elif not end: # Else if end is not on grid - make it on next click
+                    end = spot
+                    end.mmake_end()
+
+            elif pygame.mouse.get_pressed[2]: # Right Mouse Click
+                
     pygame.quit()
             
 
