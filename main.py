@@ -109,11 +109,12 @@ def h(p1, p2):
     return abs(x1 - x2) + abs(y1 - y2)
 
 # Traverse from the current node all the way back to the start Node.
-def construct_path(came_from, current, draw):
+def construct_path(came_from, current, draw, start):
     while current in came_from:
         current = came_from[current]
-        current.make_path()
-        draw()
+        if current != start:
+            current.make_path()
+            draw()
 
 
 def algorithm(draw, grid, start, end):
@@ -137,7 +138,7 @@ def algorithm(draw, grid, start, end):
         open_set_hash.remove(current) # Remove start from the hash. 
 
         if current == end: # We finished
-            construct_path(came_from, end, draw)
+            construct_path(came_from, end, draw, start)
             end.make_end()
             return True
 
