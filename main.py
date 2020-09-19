@@ -70,7 +70,7 @@ class Spot:
         self.color = RED
 
     def make_open(self):
-        self.color = GREEN
+        self.color = ORANGE
 
     def make_barrier(self):
         self.color = BLACK
@@ -108,15 +108,15 @@ def h(p1, p2):
     # Use distance formula
     return abs(x1 - x2) + abs(y1 - y2)
 
-def algorithm(draw, grid, start, end)
+def algorithm(draw, grid, start, end):
     count = 0
     open_set = PriorityQueue()
     open_set.put((0, count, start)) # Adds to Priority Queue / Keeps track [takes two nodes that have the same fValue and takes the first that was inserted]
     came_from = {} # Where did this Node come from - Keeps track
-    g_score = {spot: float("inf") for row in grid for spot in row} # List comprehension 
+    g_score = {spot: float("inf") for row in grid for spot in row} # List comprehension - Keeps track of the current shortest distance from start to this node
     g_score[start] = 0
-    f_score = {spot: float("inf") for row in grid for spot in row} # List comprehension
-    f_score[start] = h(start.get_pos, end.get_pos()) # Estimate the distance from start to end
+    f_score = {spot: float("inf") for row in grid for spot in row} # List comprehension - Keeps track of our predicted distance to the end
+    f_score[start] = h(start.get_pos(), end.get_pos()) # Estimate the distance from start to end 
 
     open_set_hash = {start} # PriorityQueue can't tell us what's in the queue, so we have a hash to do that. 
 
@@ -124,6 +124,32 @@ def algorithm(draw, grid, start, end)
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # Exit while loop case
                 pygame.quit()
+        
+        current = open_set.get()[2] # start 2 because we want the node[start] not the fscore or the count thats stored
+        open_set_hash.remove(current) # Remove start from the hash. 
+
+        if current == end: # We finished
+            return True
+
+        for neighbor in current.neighbors:
+            temp_g_score = g_score[current] + 1 # Take the distance of the current node and add 1
+
+            if temp_g_score < g_score[neighbor]: # If we find a better path - Update
+                came_from[neighbor] = current
+                g_score[neighbor] = temp_g_score
+                f_score[neighbor] = temp_g_score + h(neighbor.get_pos(), end.get_pos())
+                if neighbor not in open_set_hash:
+                    count += 1
+                    open_set.put((f_score[neighbor], count, neighbor)) # Add
+                    open_set_hash.add(neighbor)
+                    neighbor.make_open()
+        draw()
+
+        if current != start: # Make it closed(RED) if the node we got is not start
+            current.make_closed()
+
+    return False
+
 
 # Makes the grid
 def make_grid(rows, width):
@@ -145,9 +171,7 @@ def draw_grid(win, rows, width):
         for j in range(rows):
             pygame.draw.line(win, GREY, (j * gap, 0), (j * gap, width))  # Vertical
 
-    # Draws the linens
-
-
+# Draws the lines
 def draw(win, grid, rows, width):
     win.fill(WHITE)
 
@@ -157,9 +181,7 @@ def draw(win, grid, rows, width):
     draw_grid(win, rows, width)
     pygame.display.update()
 
-    # Handles mouse clicks - drawing cubes
-
-
+# Handles mouse clicks - drawing cubes
 def get_clicked_pos(pos, rows, width):
     gap = width // rows
     y, x = pos  # take the position and divide by the width of the cubes
@@ -217,7 +239,7 @@ def main(win, width):
                 if event.key == pygame.K_SPACE and not started: # Upadating the neighbors
                     for row in grid:
                         for spot in row:
-                            spot.update_neighbors() 
+                            spot.update_neighbors(grid) 
                     algorithm(lambda: draw(win, grid, ROWS, width), grid, start, end) # Creates anonymous function
                 
     pygame.quit()
