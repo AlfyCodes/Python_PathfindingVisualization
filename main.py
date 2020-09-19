@@ -60,7 +60,7 @@ class Spot:
 
     # Resets the Grid
     def reset(self):
-        self.color == WHITE
+        self.color = WHITE
 
     def make_start(self):
         self.color = GREEN
@@ -178,7 +178,14 @@ def main(win, width):
                     spot.make_barrier()
 
             elif pygame.mouse.get_pressed()[2]:  # Right Mouse Click
-                pass
+                pos = pygame.mouse.get_pos()
+                row, col = get_clicked_pos(pos, ROWS, width)
+                spot = grid[row][col]
+                spot.reset() # Delete spot
+                if spot == start:
+                    start = None
+                elif spot == end:
+                    end = None
 
     pygame.quit()
 
