@@ -108,6 +108,14 @@ def h(p1, p2):
     # Use distance formula
     return abs(x1 - x2) + abs(y1 - y2)
 
+# Traverse from the current node all the way back to the start Node.
+def construct_path(came_from, current, draw):
+    while current in came_from:
+        current = came_from[current]
+        current.make_path()
+        draw()
+
+
 def algorithm(draw, grid, start, end):
     count = 0
     open_set = PriorityQueue()
@@ -129,6 +137,8 @@ def algorithm(draw, grid, start, end):
         open_set_hash.remove(current) # Remove start from the hash. 
 
         if current == end: # We finished
+            construct_path(came_from, end, draw)
+            end.make_end()
             return True
 
         for neighbor in current.neighbors:
@@ -209,9 +219,6 @@ def main(win, width):
             if event.type == pygame.QUIT:
                 run = False
 
-            if started:
-                continue
-
             if pygame.mouse.get_pressed()[0]:  # Left Mouse Click
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
@@ -236,11 +243,15 @@ def main(win, width):
                 elif spot == end:
                     end = None
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not started: # Upadating the neighbors
+                if event.key == pygame.K_SPACE and start and end: # Upadating the neighbors
                     for row in grid:
                         for spot in row:
                             spot.update_neighbors(grid) 
                     algorithm(lambda: draw(win, grid, ROWS, width), grid, start, end) # Creates anonymous function
+                if event.key == pygame.K_c:
+                    start = None
+                    end = None
+                    grid = make_grid(ROWS, width)        
                 
     pygame.quit()
 
