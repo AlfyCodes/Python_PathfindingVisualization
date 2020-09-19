@@ -167,10 +167,10 @@ def main(win, width):
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
                 spot = grid[row][col]
-                if not start:  # If start is not on the grid - make it on next click
+                if not start and spot != end:  # If start is not on the grid - make it on next click
                     start = spot
                     start.make_start()
-                elif not end:  # Else if end is not on grid - make it on next click
+                elif not end and spot != start:  # Else if end is not on grid - make it on next click
                     end = spot
                     end.make_end()
 
