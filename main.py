@@ -108,6 +108,23 @@ def h(p1, p2):
     # Use distance formula
     return abs(x1 - x2) + abs(y1 - y2)
 
+def algorithm(draw, grid, start, end)
+    count = 0
+    open_set = PriorityQueue()
+    open_set.put((0, count, start)) # Adds to Priority Queue / Keeps track [takes two nodes that have the same fValue and takes the first that was inserted]
+    came_from = {} # Where did this Node come from - Keeps track
+    g_score = {spot: float("inf") for row in grid for spot in row} # List comprehension 
+    g_score[start] = 0
+    f_score = {spot: float("inf") for row in grid for spot in row} # List comprehension
+    f_score[start] = h(start.get_pos, end.get_pos()) # Estimate the distance from start to end
+
+    open_set_hash = {start} # PriorityQueue can't tell us what's in the queue, so we have a hash to do that. 
+
+    while not open_set.empty(): # Run until empty - Considers all nodes for possible path
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: # Exit while loop case
+                pygame.quit()
+
 # Makes the grid
 def make_grid(rows, width):
     grid = []
@@ -197,7 +214,11 @@ def main(win, width):
                 elif spot == end:
                     end = None
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not started:
+                if event.key == pygame.K_SPACE and not started: # Upadating the neighbors
+                    for row in grid:
+                        for spot in row:
+                            spot.update_neighbors() 
+                    algorithm(lambda: draw(win, grid, ROWS, width), grid, start, end) # Creates anonymous function
                 
     pygame.quit()
 
