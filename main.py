@@ -85,8 +85,18 @@ class Spot:
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
     def update_neighbors(self, grid):
-        pass
-
+        self.neighbors = []
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier(): # Moving Down a row
+            self.neighbors.append(grid[self.row + 1][self.col])
+        
+        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier(): # Moving Up a row
+            self.neighbors.append(grid[self.row - 1][self.col])
+        
+        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier(): # Moving Right a row
+            self.neighbors.append(grid[self.row][self.col + 1])
+        
+        if self.col > 0 and not grid[self.row][self.col - 1].is_barrier(): # Moving Left a row
+            self.neighbors.append(grid[self.row][self.col - 1])
     # Less than that handles Spot comparisons
     def __lt__(self, other):
         return False
@@ -186,7 +196,9 @@ def main(win, width):
                     start = None
                 elif spot == end:
                     end = None
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and not started:
+                
     pygame.quit()
 
 main(WIN, WIDTH)
