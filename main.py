@@ -34,40 +34,38 @@ class Spot:
         self.width = width
         self.total_rows = total_rows
 
-# Gets the position
+    # Gets the position
     def get_pos(self):
         return self.row, self.col
 
-# The red squares will indicate that we already looked at this position
-
-
+    # The red squares will indicate that we already looked at this position
     def is_closed(self):
         return self.color == RED
 
-# Open Set
+    # Open Set
     def is_open(self):
         return self.colo == ORANGE
 
-# Barrier
+    # Barrier
     def is_barrier(self):
         return self.color == BLACK
 
-# Starting Location
+    # Starting Location
     def is_start(self):
         return self.color == GREEN
 
-# Ending Location
+    # Ending Location
     def is_end(self):
         return self.color == PURPLE
 
-# Resets the Grid
+    # Resets the Grid
     def reset(self):
         self.color == WHITE
 
-def make_start(self):
-    self.color = GREEN
+    def make_start(self):
+        self.color = GREEN
 
-# Change the colors
+    # Change the colors
     def make_closed(self):
         self.color = RED
 
@@ -84,12 +82,12 @@ def make_start(self):
         self.color = TURQUOISE
 
     def draw(self, win):
-        pygame.draw.rect(win, self.color, ())
+        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
     def update_neighbors(self, grid):
         pass
 
-# Less than that handles Spot comparisons 
+    # Less than that handles Spot comparisons
     def __lt__(self, other):
         return False
 
@@ -97,28 +95,31 @@ def make_start(self):
 def h(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
-    # Use distance formula 
+    # Use distance formula
     return abs(x1 - x2) + abs(y1 - y2)
 
 # Makes the grid
 def make_grid(rows, width):
     grid = []
-    gap = width // rows 
+    gap = width // rows
     for i in range(rows):
         grid.append([])
         for j in range(rows):
             spot = Spot(i, j, gap, rows)
             grid[i].append(spot)
 
-    return grid 
+    return grid
 
 # Draw Lines
-def draw_grid(win,rows,width):
-    gap = width // rows 
+def draw_grid(win, rows, width):
+    gap = width // rows
     for i in range(rows):
-        pygame.draw.line(win, GREY, (0, i * gap), (width, i * gap)) # Horiztanl
+        pygame.draw.line(win, GREY, (0, i * gap), (width, i * gap))  # Horiztanl
         for j in range(rows):
-            pygame.draw.line(win, GREY, (j * gap, 0), (j * gap, width)) # Vertical
+            pygame.draw.line(win, GREY, (j * gap, 0), (j * gap, width))  # Vertical
+
+    # Draws the linens
+
 
 def draw(win, grid, rows, width):
     win.fill(WHITE)
@@ -129,58 +130,56 @@ def draw(win, grid, rows, width):
     draw_grid(win, rows, width)
     pygame.display.update()
 
-# Handles mouse clicks - drawing cubes
+    # Handles mouse clicks - drawing cubes
+
+
 def get_clicked_pos(pos, rows, width):
     gap = width // rows
-    y, x = pos # take the position and divide by the width of the cubes
+    y, x = pos  # take the position and divide by the width of the cubes
 
     row = y // gap
-    col = x // gap 
+    col = x // gap
 
     return row, col
 
 # The Main Loop
-def main(win, width):
 
+
+def main(win, width):
     ROWS = 50
     grid = make_grid(ROWS, width)
 
     start = None
     end = None
-    
-    run = True 
+
+    run = True
     started = False
     while run:
+        draw(win, grid, ROWS, width)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
             if started:
                 continue
-            
-            if pygame.mouse.get_pressed()[0]: # Left Mouse Click
+
+            if pygame.mouse.get_pressed()[0]:  # Left Mouse Click
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
                 spot = grid[row][col]
-                if not start: # If start is not on the grid - make it on next click
-                    start = spot 
+                if not start:  # If start is not on the grid - make it on next click
+                    start = spot
                     start.make_start()
-                elif not end: # Else if end is not on grid - make it on next click
+                elif not end:  # Else if end is not on grid - make it on next click
                     end = spot
-                    end.mmake_end()
+                    end.make_end()
 
-                elif spot != end and spot != start: # Else if make a barrier
+                elif spot != end and spot != start:  # Else if make a barrier
                     spot.make_barrier()
 
-            elif pygame.mouse.get_pressed()[2]: # Right Mouse Click
+            elif pygame.mouse.get_pressed()[2]:  # Right Mouse Click
                 pass
-                
+
     pygame.quit()
 
 main(WIN, WIDTH)
-            
-
-
-
-
-    
